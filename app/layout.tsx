@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: 'Jurnale Ean',
+  title: 'rehansparker',
 };
 
 interface RootLayoutProps {

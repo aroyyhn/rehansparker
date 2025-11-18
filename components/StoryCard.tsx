@@ -1,4 +1,8 @@
 import Link from 'next/link';
+// Import fungsi format
+import { format } from 'date-fns';
+// Import locale Indonesia untuk nama bulan
+import { id } from 'date-fns/locale';
 
 interface StoryCardProps {
   title: string;
@@ -8,7 +12,12 @@ interface StoryCardProps {
   genre: string;
 }
 
+
 export default function StoryCard({ title, excerpt, slug, date, genre }: StoryCardProps) {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+  // Format tanggal: 'dd MMMM yyyy' berarti 12 Februari 2025
+    const formattedDate = format(dateObj, 'dd MMMM yyyy', { locale: id });
   return (
     <Link
       href={`/blog/${slug}`}

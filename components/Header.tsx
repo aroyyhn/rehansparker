@@ -1,7 +1,7 @@
 export default function Header() {
   return (
     <header className="py-6 border-b bg-white/80 backdrop-blur">
-      <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-8 flex items-center justify-between">
         
         {/* LOGO */}
         <a href="/" className="flex items-center gap-3 no-underline">

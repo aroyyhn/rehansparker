@@ -1,13 +1,11 @@
 import StoryCard from '../../components/StoryCard';
-import { getBlogPosts } from '@/lib/contentful'; // Import fungsi fetching
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale'; 
+import { getBlogPosts } from '@/lib/contentful';
+import { format, isValid } from 'date-fns';
+import { id } from 'date-fns/locale';
 
-// Komponen Server Asynchronous untuk fetching data
 export default async function Blog() {
   const posts = await getBlogPosts();
 
-  // Handle jika tidak ada postingan
   if (!posts || posts.length === 0) {
     return (
       <div className="max-w-3xl mx-auto py-10 px-4">
@@ -23,8 +21,13 @@ export default async function Blog() {
 
       <div className="grid grid-cols-1 gap-4">
         {posts.map((story) => {
-          const dateObj = new Date(story.fields.date as string); 
-          const formattedDateString = format(dateObj, 'dd MMMM yyyy', { locale: id });
+          const rawDate = story.fields.date as string;
+          const dateObj = new Date(rawDate);
+
+          // Jika invalid → fallback ke teks "Tanggal tidak valid"
+          const formattedDateString = isValid(dateObj)
+            ? format(dateObj, 'dd MMMM yyyy', { locale: id })
+            : 'Tanggal tidak valid';
 
           return (
             <StoryCard

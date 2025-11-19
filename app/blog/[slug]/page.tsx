@@ -1,22 +1,22 @@
-import { getSinglePost } from '@/lib/contentful'; // Import fungsi single post
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer'; // Library untuk Rich Text
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale'; 
+import { getSinglePost } from '@/lib/contentful';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { format, isValid } from 'date-fns';
+import { id } from 'date-fns/locale';
 
-// Anda perlu mendefinisikan tipe props untuk App Router
+// Tipe props untuk App Router
 interface PostPageProps {
   params: {
     slug: string;
   };
 }
 
-// Komponen Server Asynchronous untuk fetching data
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = params;
 
-  // Panggil fungsi fetching
-  const post = await getSinglePost(slug); 
+  // Fetch data post
+  const post = await getSinglePost(slug);
 
+  // Jika post tidak ditemukan → tampil 404
   if (!post) {
     return (
       <div className="max-w-3xl mx-auto py-20 text-center">
@@ -27,37 +27,48 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   const { title, genre, date, content } = post.fields;
-  
-  // 1. Pemformatan Tanggal ke format Indonesia
-  const dateObj = new Date(date as string); 
-  const formattedDate = format(dateObj, 'dd MMMM yyyy', { locale: id });
+
+  // ✅ Pemformatan tanggal aman
+  let formattedDate = "Tanggal tidak tersedia";
+
+  if (date) {
+    const dateObj = new Date(date as string);
+    if (isValid(dateObj)) {
+      formattedDate = format(dateObj, 'dd MMMM yyyy', { locale: id });
+    } else {
+      formattedDate = "Tanggal tidak valid";
+    }
+  }
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-4 md:px-0">
       
-      {/* Metadata Rapi */}
-      <p className="text-sm text-pink-600 font-medium mb-1 uppercase tracking-wider">
-        {genre as string}
-      </p>
-      
+      {/* Metadata post */}
+      {genre && (
+        <p className="text-sm text-pink-600 font-medium mb-1 uppercase tracking-wider">
+          {genre}
+        </p>
+      )}
+
       <h1 className="text-4xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-4">
-        {title as string}
+        {title}
       </h1>
-      
+
       <p className="text-base text-gray-500 mb-10 border-b pb-4">
         Dipublikasikan pada {formattedDate}
       </p>
-      
-      {/* 2. Styling Typography */}
-      {/* Kelas 'prose' dari Tailwind memberikan styling margin, line-height, dan ukuran font yang rapi untuk konten Rich Text. */}
+
+      {/* Konten Rich Text */}
       <div className="prose prose-md max-w-none text-gray-700">
-        {/* Render konten Rich Text */}
-        {documentToReactComponents(content)} 
+        {documentToReactComponents(content)}
       </div>
-      
-      {/* Tombol kembali ke Blog */}
+
+      {/* Tombol kembali ke blog */}
       <div className="mt-12">
-        <a href="/blog" className="text-pink-600 hover:text-pink-800 transition font-semibold">
+        <a
+          href="/blog"
+          className="text-pink-600 hover:text-pink-800 transition font-semibold"
+        >
           ← Kembali ke Daftar Blog
         </a>
       </div>

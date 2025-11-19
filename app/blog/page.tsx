@@ -36,7 +36,7 @@ export default async function Blog() {
               excerpt={story.fields.excerpt as string}
               slug={story.fields.slug as string}
               date={formattedDateString}
-              genre={story.fields.genre as string}
+              genre={story.fields.genre as string[]}
             />
           );
         })}

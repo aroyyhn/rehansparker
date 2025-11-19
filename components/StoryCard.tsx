@@ -11,6 +11,7 @@ interface StoryCardProps {
 export default function StoryCard({ title, excerpt, slug, date, genre }: StoryCardProps) {
 
   const safeGenre = Array.isArray(genre) ? genre : [genre]; // ← FIX INTI
+  console.log("slug card:", slug);
 
   return (
     <Link

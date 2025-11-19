@@ -3,15 +3,21 @@ import { getBlogPosts } from "@/lib/contentful";
 import { format, parseISO, isValid } from "date-fns";
 import { id } from "date-fns/locale";
 
-// Pastikan selalu fetch data terbaru
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
+
+function fixDateLocal(dateString: string | null | undefined): Date | null {
+  if (!dateString) return null;
+
+  const dateOnly = String(dateString).split("T")[0];
+  const d = new Date(dateOnly + "T00:00:00");
+  return Number.isNaN(d.getTime()) ? null : d;
+}
 
 export default async function Page() {
   const posts = await getBlogPosts();
 
-  // Ambil hanya 2 blog terbaru
-  const latestPosts = posts.slice(0, 2);
+  const latestPosts = posts.slice(0, 2).map(p => ({ ...p }));
 
   if (!latestPosts || latestPosts.length === 0) {
     return (
@@ -55,10 +61,12 @@ export default async function Page() {
             let formattedDate = "Tanggal tidak tersedia";
 
             if (rawDate) {
-              const parsed = parseISO(rawDate);
-              formattedDate = isValid(parsed)
-                ? format(parsed, "dd MMMM yyyy", { locale: id })
-                : "Tanggal tidak valid";
+              const parsed = fixDateLocal(rawDate);
+              if (parsed && isValid(parsed)) {
+                formattedDate = format(parsed, "dd MMMM yyyy", { locale: id });
+              } else {
+                formattedDate = "Tanggal tidak valid";
+              }
             }
 
             return (
@@ -70,8 +78,10 @@ export default async function Page() {
                 date={formattedDate}
                 genre={f.genre}
               />
+              
             );
           })}
+          
         </div>
       </section>
     </div>

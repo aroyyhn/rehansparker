@@ -6,6 +6,17 @@ import { id } from 'date-fns/locale';
 export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
+function fixDateLocal(dateString: string | null | undefined): Date | null {
+  if (!dateString) return null;
+
+  // Pastikan hanya ambil tanggalnya (hindari timezone shifting)
+  const dateOnly = String(dateString).split("T")[0]; // contoh: "2025-10-30"
+
+  const d = new Date(dateOnly + "T00:00:00"); // paksa jadi local date
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+
 export default async function Blog() {
   const posts = await getBlogPosts();
 
@@ -25,12 +36,11 @@ export default async function Blog() {
       <div className="grid grid-cols-1 gap-4">
         {posts.map((story) => {
           const rawDate = story.fields.date as string;
-          const dateObj = new Date(rawDate);
-
-          // Jika invalid → fallback ke teks "Tanggal tidak valid"
-          const formattedDateString = isValid(dateObj)
-            ? format(dateObj, 'dd MMMM yyyy', { locale: id })
-            : 'Tanggal tidak valid';
+          const dateObj = fixDateLocal(rawDate);
+          const formattedDateString =
+            dateObj && isValid(dateObj)
+              ? format(dateObj, "dd MMMM yyyy", { locale: id })
+              : "Tanggal tidak valid";
 
           return (
             <StoryCard

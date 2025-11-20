@@ -28,10 +28,10 @@ export default async function Page() {
   }
 
   return (
-    <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+    <div className="container-base">
       {/* Quote section */}
-      <section className="relative h-[25vh] sm:h-[35vh] bg-white flex items-end justify-end p-4 sm:p-8 mb-10">
-        <p className="max-w-xs sm:max-w-sm text-right text-[12px] sm:text-[13px] text-gray-600 leading-relaxed">
+      <section className="relative h-[22vh] sm:h-[35vh] bg-white flex items-end justify-end p-4 sm:p-6 mb-10">
+        <p className="max-w-xs sm:max-w-sm text-right text-[12px] sm:text-[12px] text-gray-600 leading-relaxed">
           “Seorang penyendiri tidak akan membiarkan orang lain membaca ceritanya  
           kecuali itu teman dekatnya”
           <br />— teman dekatmu

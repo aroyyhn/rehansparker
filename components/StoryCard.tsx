@@ -27,7 +27,7 @@ export default function StoryCard({ title, excerpt, slug, date, genre }: StoryCa
           </p>
         )}
 
-        <p className="text-gray-600 text-[14px] leading-snug mb-3">{excerpt}</p>
+        <p className="text-gray-600 text-[12px] leading-snug mb-3">{excerpt}</p>
 
         {date && <p className="text-[11px] text-gray-400 mt-auto">{date}</p>}
       </article>

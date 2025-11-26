@@ -1,9 +1,1 @@
-Sebelum itu "npm install"
 
-lalu tambahin .env.local
-CONTENTFUL_SPACE_ID="yf9h208rfwol"
-CONTENTFUL_ACCESS_TOKEN="lGHryHT9D6qDKJVglqDHEJH_f2pzcOdU5vcn64vffjo"
-CONTENTFUL_ENVIRONMENT= "master"
-
-**yang post masih gak bisa
-**

@@ -7,7 +7,7 @@ export default function About() {
       </h1>
 
       <p className="text-[14px] text-gray-600 leading-relaxed text-decoration-line: underline">
-      MANUSIA YANG INGIN MENGHADIRKAN SENYUMAN BAGI BANYAK ORANG LEWAT TULISANNYA.
+      MANUSIA YANG INGIN MENGHADIRKAN SENYUM BAGI BANYAK ORANG LEWAT TULISANNYA.
       </p>
 
     </div>
